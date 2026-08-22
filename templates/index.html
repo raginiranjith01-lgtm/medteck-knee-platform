@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedTech Knee Analysis Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-icon">🦴</span>
+        <div>
+          <strong>MedTech Knee Platform</strong>
+          <small>AI-Assisted OA Assessment &amp; Implant Sizing</small>
+        </div>
+      </div>
+      <nav>
+        <button class="tab-btn active" data-tab="analyze">Analyze</button>
+        <button class="tab-btn" data-tab="results" disabled id="tab-results">Results</button>
+        <button class="tab-btn" data-tab="research">Research</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="disclaimer">
+      Clinical decision-support tool only. Final diagnosis and treatment remain with qualified medical professionals.
+    </div>
+
+    <!-- ANALYZE TAB -->
+    <section id="panel-analyze" class="panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Upload Knee Image</h2>
+          <p class="muted">MRI, X-ray, or coronal knee scan (PNG, JPG, BMP, TIFF)</p>
+
+          <form id="analyze-form">
+            <div class="dropzone" id="dropzone">
+              <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.bmp,.tif,.tiff" hidden>
+              <div id="dropzone-empty">
+                <p><strong>Drop knee image here</strong></p>
+                <p class="muted">or <button type="button" class="link" id="browse-btn">browse</button></p>
+              </div>
+              <div id="file-preview" class="hidden">
+                <img id="preview-img" alt="Preview">
+                <p id="preview-name"></p>
+              </div>
+            </div>
+
+            <h3>Patient Information</h3>
+            <div class="form-grid">
+              <label>Patient ID<input type="text" name="patient_id" placeholder="PT-001"></label>
+              <label>Age<input type="number" name="age" min="1" max="120" placeholder="55"></label>
+              <label>Sex
+                <select name="sex">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </label>
+              <label>OA Status
+                <select name="oa_status">
+                  <option value="unknown">Unknown</option>
+                  <option value="oa">OA (Osteoarthritis)</option>
+                  <option value="non-oa">Non-OA</option>
+                </select>
+              </label>
+              <label>Pixel-to-mm (optional)<input type="number" step="0.001" name="pixel_to_mm" placeholder="Auto-detect"></label>
+            </div>
+
+            <button type="submit" class="btn-primary" id="analyze-btn" disabled>Run AI Analysis</button>
+          </form>
+        </div>
+
+        <div class="card info-card">
+          <h2>Platform Modules</h2>
+          <div class="module">
+            <h3>Module 1 — Medial Meniscus &amp; OA</h3>
+            <ul>
+              <li>Detect femur, tibia, medial meniscus</li>
+              <li>Measure thickness at anterior, mid-body, posterior horn</li>
+              <li>Compare with sex-specific reference values</li>
+              <li>OA likelihood assessment</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Module 2 — Implant Sizing (TKA)</h3>
+            <ul>
+              <li>Femoral &amp; tibial width / AP dimensions</li>
+              <li>Match against implant sizing database</li>
+              <li>Ranked size recommendations</li>
+              <li>Overhang / under-coverage warnings</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS TAB -->
+    <section id="panel-results" class="panel hidden">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Visualization</h2>
+          <div class="viz-container">
+            <img id="result-viz" alt="Analysis overlay">
+          </div>
+          <div class="legend">
+            <span class="leg femur">Femur</span>
+            <span class="leg meniscus">Medial Meniscus</span>
+            <span class="leg tibia">Tibia</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Patient Summary</h2>
+          <dl class="summary" id="patient-summary"></dl>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Module 1: Meniscus Analysis</h2>
+          <table class="data-table" id="meniscus-table">
+            <thead><tr><th>Location</th><th>Thickness (mm)</th><th>Reference (mm)</th><th>Diff %</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="oa-box" id="oa-box"></div>
+        </div>
+
+        <div class="card">
+          <h2>Module 2: Implant Sizing</h2>
+          <div id="bone-measurements"></div>
+          <h3>Recommended Sizes</h3>
+          <div class="implant-rec" id="implant-rec"></div>
+          <h3>Ranked Matches</h3>
+          <div class="match-columns" id="match-columns"></div>
+        </div>
+      </div>
+
+      <button class="btn-secondary" id="new-analysis">New Analysis</button>
+    </section>
+
+    <!-- RESEARCH TAB -->
+    <section id="panel-research" class="panel hidden">
+      <div class="card">
+        <h2>Population Analytics</h2>
+        <p class="muted">Compare meniscus thickness across sex and OA status from stored cases.</p>
+        <div class="stats-grid" id="stats-grid"></div>
+        <h3>Recent Cases</h3>
+        <table class="data-table" id="cases-table">
+          <thead><tr><th>Patient</th><th>Sex</th><th>Age</th><th>OA</th><th>Meniscus (mm)</th><th>Femoral</th><th>Tibial</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="loading hidden" id="loading">
+    <div class="spinner"></div>
+    <p>Analyzing knee structures...</p>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
