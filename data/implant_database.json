@@ -1,0 +1,30 @@
+{
+  "system": "Generic TKA Implant System",
+  "units": "mm",
+  "pixel_to_mm_default": 0.15,
+  "femoral_components": [
+    {"size": "1", "width": 59.0, "ap": 53.0, "thickness": 8.5},
+    {"size": "2", "width": 62.0, "ap": 56.0, "thickness": 9.0},
+    {"size": "3", "width": 65.0, "ap": 58.0, "thickness": 9.5},
+    {"size": "4", "width": 68.0, "ap": 61.0, "thickness": 10.0},
+    {"size": "5", "width": 71.0, "ap": 64.0, "thickness": 10.5},
+    {"size": "6", "width": 74.0, "ap": 67.0, "thickness": 11.0},
+    {"size": "7", "width": 77.0, "ap": 70.0, "thickness": 11.5},
+    {"size": "8", "width": 80.0, "ap": 73.0, "thickness": 12.0}
+  ],
+  "tibial_components": [
+    {"size": "1", "width": 59.0, "ap": 40.0, "thickness": 9.0},
+    {"size": "2", "width": 62.0, "ap": 42.0, "thickness": 10.0},
+    {"size": "3", "width": 65.0, "ap": 44.0, "thickness": 11.0},
+    {"size": "4", "width": 68.0, "ap": 46.0, "thickness": 12.0},
+    {"size": "5", "width": 71.0, "ap": 48.0, "thickness": 13.0},
+    {"size": "6", "width": 74.0, "ap": 50.0, "thickness": 14.0},
+    {"size": "7", "width": 77.0, "ap": 52.0, "thickness": 15.0},
+    {"size": "8", "width": 80.0, "ap": 54.0, "thickness": 16.0}
+  ],
+  "reference_meniscus_thickness_mm": {
+    "male": {"anterior": 4.2, "mid_body": 5.1, "posterior": 6.3},
+    "female": {"anterior": 3.8, "mid_body": 4.6, "posterior": 5.7},
+    "oa_reduced_percent": 18
+  }
+}
